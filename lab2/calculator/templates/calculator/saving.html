@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script>
+	</script>
+	<style>
+		.col {
+ 		   	-webkit-column-count: 2; /* Chrome, Safari, Opera */
+    		-moz-column-count: 2; /* Firefox */
+    		column-count: 2;
+    		width: 25%
+		}	
+		.labels {
+			text-align: right;
+		}	
+	</style>
+</head>
+
+<body>
+	<div class="col">
+		<div class="labels">
+			<label for="initial">Initial Capital</label><br>
+			<label for="final">Final Capital</label><br>
+			<label for="years">Number of Years</label><br>
+			<label for="rate">Interest Rate (Annual)</label><br>
+		</div>
+		<div>
+			<input id="initial" name="initial" type="number" step="0.01" value="{{ saving.initial_capital }}" disabled/><br>
+			<input id="final" name="final" type="number" step="0.01" value="{{ saving.final_capital }}" disabled/><br>
+			<input id="years" name="years" type="number" value="{{ saving.years }}" step="0.01" disabled/><br>
+			<input id="rate" name="rate" type="number" value="{{ saving.rate }}" step="0.01" disabled/><br>
+		</div>
+	</div>
+	<form action="{% url 'calculator:index' %}" method="get">
+		<input type="submit" value="Return">
+	</form>
+
+</body>
+</html>

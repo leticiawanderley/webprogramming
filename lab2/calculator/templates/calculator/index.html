@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script>
+	</script>
+	<style>
+		.col {
+ 		   	-webkit-column-count: 2; /* Chrome, Safari, Opera */
+    		-moz-column-count: 2; /* Firefox */
+    		column-count: 2;
+    		width: 25%
+		}	
+		.labels {
+			text-align: right;
+		}	
+	</style>
+</head>
+
+<body>
+	<form action="{% url 'calculator:result' %}" method="post">
+		{% csrf_token %}
+		<div class="col">
+			<div class="labels">
+				<label for="initial">Initial Capital</label><br>
+				<label for="final">Final Capital</label><br>
+				<label for="years">Number of Years</label><br>
+				<label for="rate">Interest Rate (Annual)</label><br>
+			</div>
+			<div>
+				<input id="initial" name="initial" type="number" step="0.01"/><br>
+				<input id="final" name="final" type="number" step="0.01"/><br>
+				<input id="years" name="years" type="number" value="5" step="0.01"/><br>
+				<input id="rate" name="rate" type="text" value="{% firstof rate 3.5 %}" step="0.01"/><br>
+			</div>
+		</div>
+		<input type="submit" value="Submit"/>
+	</form>
+
+	<div>
+		{% if queries_list %}
+		    {% for querie in queries_list %}
+		        <p><a href="{% url 'calculator:saving' querie.id %}">{{ querie }}</a></p>
+		    {% endfor %}
+		{% else %}
+		    <p>No queries are available.</p>
+		{% endif %}
+	</div>
+
+</body>
+</html>
+
+
