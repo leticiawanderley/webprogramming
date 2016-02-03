@@ -18,6 +18,8 @@ class IndexView(generic.ListView):
 		c = super(IndexView, self).get_context_data(**kwargs)
 		# add the request to the context
 		c.update({ 'request': self.request })
+		# add session variables to the context
+		c.update(self.request.session)
 		if 'rate' in self.request.COOKIES:
 			rate = self.request.COOKIES['rate']
 			c.update({'rate': float(rate)})
@@ -30,13 +32,18 @@ def result(request):
 	rate = float(request.POST['rate'])
 	if initial_capital:
 		initial_capital = float(initial_capital)
+		final_capital = None
 	elif final_capital:
 		final_capital = float(final_capital)
+		initial_capital = None
 	saving = Saving(initial_capital=initial_capital, final_capital=final_capital, years=years, rate=rate)
 	saving.calculate()
 	saving.save()
 	response = HttpResponseRedirect(reverse('calculator:saving', args=(saving.id,)))
 	response.set_cookie('rate', str(rate), expires=calculate_exp())
+	request.session['initial_capital'] = saving.initial_capital
+	request.session['final_capital'] = saving.final_capital
+	request.session['years'] = saving.years
 	return response
 
 def calculate_exp():
