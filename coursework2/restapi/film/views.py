@@ -42,7 +42,7 @@ class AwardDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Award.objects.all()
 	serializer_class = AwardSerializer
 
-class DirectorList(generics.ListAPIView):
+class DirectorList(generics.ListCreateAPIView):
     serializer_class = DirectorSerializer
     def get_queryset(self):
     	film_id = self.kwargs['pk']
