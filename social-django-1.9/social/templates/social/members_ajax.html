@@ -1,0 +1,66 @@
+{% block content %}
+<div class='main'>
+	<div class="col-sm-6">
+		<div class="panel panel-warning">
+			<div class="panel-heading">
+				<h3 class="panel-title">Recommendations</h3>
+			</div>
+			<div class="panel-body">
+				<table class="table table-condensed">
+					{% for member in recommendations %}
+						<tr>
+							<td><div class="col-sm-4"><a href="?view={{ member.username }}"> {{ member.username }}</a></div></td>
+							<td><div class="col-sm-2">{% csrf_token %}
+								<a class="btn btn-xs btn-warning request_friendship" id="{{ member.username }}" href="">request friendship</a>
+							</td>
+						<tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Other Members</h3>
+			</div>
+			<div class="panel-body">
+				<table class="table table-condensed">
+					{% for request in friendship_request %}
+						<tr>
+							<td><a href="?view={{ request.username }}" title="{{ request.profile.text }}"> {{ request.username }} </a></td>
+							{% csrf_token %}
+							<td>requested my friendship</td>
+							<td><a href="" class="btn btn-xs btn-success accept_request" id="{{ request.username }}">accept</a></td>
+							<td><a href="" class="btn btn-xs btn-danger deny_request" id="{{ request.username }}">deny</a></td>	
+						</tr>
+					{% endfor %}
+					{% for member in members %}
+						{% if member not in friendship_request %}
+							<tr>
+								<td><a href="?view={{ member.username }}" title="{{ member.profile.text }}"> {{ member.username }} </a></td>
+								{% if member in my_friendship_request %}
+									{% csrf_token %}
+									<td>I requested the friendship</td>
+									<td><a href="" class="btn btn-xs btn-danger cancel_request" id="{{ member.username }}">cancel request</a></td>
+									<td></td>
+								{% else %}
+									{% if member in friends %}
+										{% csrf_token %}
+										<td><a href="" class="btn btn-xs btn-danger unfriend_members" id="{{ member.username }}">unfriend</a></td>
+									{% else%}
+										{% csrf_token %}
+										<td><a href="" class="btn btn-xs btn-warning request_friendship" id="{{ member.username }}">request friendship</a></td>
+									{% endif %}
+									<td></td>
+									<td></td>
+								{% endif %}
+							</tr>
+						{% endif %}
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

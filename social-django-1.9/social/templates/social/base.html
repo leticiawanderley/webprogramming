@@ -1,0 +1,50 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Social Network: {{ appname }}</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'social/bootstrap.min.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'social/styles.css' %}" />
+	<script src="{% static 'social/jquery-1.11.2.js' %}"></script>
+	<script src="{% static 'social/ajax.js' %}"></script>
+</head>
+<body>
+	<div class="container">
+		<center>
+			<canvas id='logo' width='624' height='96'> {{ appname }} </canvas>
+		</center>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class='navbar-header'>
+					{% if loggedin %}
+						<a class="navbar-brand">{{ appname }} ({{ username }})</a>
+					{% else %}
+						<a class="navbar-brand">{{ appname }}</a>
+			   		{% endif %}
+			   	</div>
+		   		<div id="navbar" class="navbar-collapse collapse">
+		   			<ul class="nav navbar-nav">
+						{% if loggedin %}
+					        <li><a href='/social/members/?view={{ username }}'>Home</a></li>
+					        <li><a href='/social/members/'>Members</a></li>
+					        <li><a href='/social/friends/'>Friends</a></li>
+					        <li><a href='/social/messages/'>Messages</a></li>
+					        <li><a href='/social/profile/'>Edit Profile</a></li>
+					        <li><a href='/social/logout/'>Log out</a></li></ul><br>	
+						{% else %}
+							<li><a href='/social/'>Home</a></li>
+							<li><a href='/social/signup/'>Sign up</a></li>
+							<li><a href='/social/login/'>Log in</a></li>
+						{% endif %}
+					</ul>
+		   		</div>
+	   		</div>
+   		</nav>
+    <script src="{% static 'social/scripts.js' %}"></script>
+	<div id="content">
+	{% block content %}
+	{% endblock %}
+	</div>
+</div>
+</body>
+</html>

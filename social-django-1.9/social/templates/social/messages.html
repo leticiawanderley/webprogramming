@@ -1,0 +1,58 @@
+{% extends "social/base.html" %}
+
+{% block content %}
+<div class='main'>
+   <div class="col-sm-6">
+      <div class="panel panel-default">
+         <div class="panel-heading">
+            {% if username = view %}
+               <h3 class="panel-title">Your Messages</h3>
+            {% else %}
+               <h3 class="panel-title"><a href="/social/members/?view={{view}}">{{view}}</a>'s Messages</h3>
+            {% endif %}
+         </div>
+         <div class="panel-body">
+            {% if messages %}
+               <table class="table table-condensed">
+                  {% for message in messages %}
+                     {% if message.pm or message.user.username = username or message.recip.username = username %}
+                        <tr>
+                           <td>{{ message.time }}:</td> 
+                           <td><a href='/social/messages/?view={{message.user.username}}'>{{message.user.username}}</a></td>
+                           {% if message.pm %}
+                              <td>wrote: "{{ message.text }}"</td>
+                           {% else %}
+                              <td>whispered: <span class='whisper'>"{{ message.text }}"</span></td> 
+                           {% endif %}
+                           {% if view = username %}
+                              <td><a href='/social/messages/?view={{view}}&erase={{message.id}}' class="btn btn-xs btn-danger">erase</a></td>
+                           {% endif %}
+                        </tr>
+                     {% endif %}
+                  {% endfor %}
+               </table>
+            {% else %}
+               <span>No messages yet</span><br><br>
+            {% endif %}
+               <a class='button' href='/social/messages/?view={{view}}'>Refresh messages</a>
+         </div>
+      </div>
+   </div>
+   <div class="col-sm-6">
+      <form method='POST' action='/social/messages/?view={{view}}'>
+         {% csrf_token %}
+         <div class="form-group">
+           <label for="message">Type here to leave a message:</label>
+           <textarea class="form-control" cols="40" rows="3" id="message" name="text"></textarea>
+         </div>
+         <div class="radio">
+           <label><input type="radio" name="pm" value="0" checked="checked">Public</label>
+         </div>
+         <div class="radio">
+           <label><input type="radio" name="pm" value="1">Private</label>
+         </div>
+         <button type='submit' class="btn btn-default">Post Message</button>
+      </form>
+   </div>
+</div>
+{% endblock %}

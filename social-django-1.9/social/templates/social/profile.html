@@ -1,0 +1,24 @@
+{% extends "social/base.html" %}
+
+{% block content %}
+<div class='main'>
+{% if text %}
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">Your Profile</h3>
+		</div>
+		<div class="panel-body">
+			{{ text }} <br style='clear:left;'><br>
+		</div>
+	</div>
+{% endif %}
+<form method='POST' {% url 'profile' %} enctype='multipart/form-data'>
+  	{% csrf_token %}
+  	<div class="form-group">
+  		<label for="profile">Enter or edit your details and/or upload an image</label>
+  		<textarea class="form-control" cols="50" rows="3" id="profile" name="text">{{ text}}</textarea>
+    </div>
+   	<button type='submit' class="btn btn-default">Save Profile</button>
+</form>
+</div>
+{% endblock %}

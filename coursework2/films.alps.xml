@@ -1,0 +1,101 @@
+<alps version="1.0">
+  <doc format="text">A film list.</doc>  
+  <!-- a hypermedia control for returning contacts -->
+  <descriptor id="collection" type="safe" rt="#film">
+    <doc>
+      A link for getting a list of films.
+    </doc>
+    <descriptor id="name" type="semantic">
+      <doc>Input for a search.</doc>
+    </descriptor>
+    <descriptor id="genre" type="semantic">
+      <doc>Input for a search.</doc>
+    </descriptor>
+
+    <descriptor id="item" name="film" type="safe">
+      <doc>A link to an individual film.</doc>
+    </descriptor>
+
+    <descriptor id="create" type="unsafe" rt="#film">
+      <doc>Allows the creation of a new film</doc>
+      <descriptor href="#film" />
+    </descriptor>
+  </descriptor>     
+  
+  <!--  a film: one or more of these may be returned -->
+  <descriptor id="film" type="semantic" href="https://schema.org/Movie">
+    <descriptor id="title" type="semantic" href="https://schema.org/name"/>
+    <descriptor id="year" type="semantic"  href="https://schema.org/copyrightYear"/>
+    <descriptor id="genre" type="semantic" href="https://schema.org/genre"/>
+    <descriptor href="#actor"/>
+    <descriptor href="#director"/>
+    <descriptor href="#award"/>
+
+    <descriptor id="author" type="safe" rt="#director">
+      <doc>A link to the film's director.</doc>
+    </descriptor>
+    <descriptor id="get_actors" type="safe" rt="#actor">
+      <doc>A link to the film's cast.</doc>
+    </descriptor>
+    <descriptor id="get_awards" type="safe" rt="#award">
+      <doc>A link to the film's awards.</doc>
+    </descriptor>
+    <descriptor id="edit" type="idempotent" rt="#film">
+      <doc>Updates a film</doc>
+      <descriptor href="#film" />
+    </descriptor>
+    <descriptor id="delete" type="idempotent">
+      <doc>Deletes a film</doc>
+    </descriptor>
+    <descriptor href="#collection"/>
+  </descriptor>
+
+  <descriptor id="actor" type="semantic" href="https://schema.org/actor">
+    <descriptor id="get_actor" type="safe">
+      <doc>A link to an individual actor.</doc>
+    </descriptor>
+    <descriptor id="name" type="semantic" href="https://schema.org/name"/>
+    <descriptor id="create_actor" type="unsafe" rt="#actor">
+      <doc>Allows the creation of a new actor</doc>
+      <descriptor href="#actor" />
+    </descriptor>
+    <descriptor id="update_actor" type="idempotent" rt="#actor">
+      <doc>Updates an actor</doc>
+      <descriptor href="#actor" />
+    </descriptor>
+    <descriptor id="delete_actor" type="idempotent">
+      <doc>Deletes an actor</doc>
+    </descriptor>
+    <descriptor href="#collection"/>
+  </descriptor>
+
+   <descriptor id="director" type="semantic" href="https://schema.org/director">
+    <descriptor id="director_name" type="semantic" href="https://schema.org/name"/>
+    <descriptor id="update_director" type="idempotent" rt="#director">
+      <doc>Updates a director</doc>
+      <descriptor href="#director" />
+    </descriptor>
+    <descriptor id="delete_direcor" type="idempotent">
+      <doc>Deletes a director</doc>
+    </descriptor>
+    <descriptor href="#collection"/>
+  </descriptor>
+
+  <descriptor id="award" type="semantic" href="https://schema.org/award">
+    <descriptor id="get_award" type="safe">
+      <doc>A link to an individual award.</doc>
+    </descriptor>
+    <descriptor id="create_award" type="unsafe" rt="#award">
+      <doc>Allows the creation of a new award</doc>
+      <descriptor href="#award" />
+    </descriptor>
+    <descriptor id="update_award" type="idempotent" rt="#award">
+      <doc>Updates an award</doc>
+      <descriptor href="#award" />
+    </descriptor>
+    <descriptor id="delete_award" type="idempotent">
+      <doc>Deletes an award</doc>
+    </descriptor>
+    <descriptor href="item">
+  </descriptor>
+</alps>

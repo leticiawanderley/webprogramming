@@ -1,0 +1,27 @@
+{% block content %}
+<div class='main'>
+	<div class="col-sm-4">
+		{% if friends %}
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Your friends</h3>
+				</div>
+				<div class="panel-body">
+					<table class="table table-condensed">
+						{% for member in friends %}
+							<tr>
+								{% csrf_token %}
+								<td><a href="/social/members/?view={{ member.username }}"> {{ member.username }}</a></td>
+								<td><a href="" class="btn btn-xs btn-danger unfriend" id="{{ member.username }}">unfriend</a></td>
+							</tr>
+						{% endfor %}
+					</table>
+				</div>
+			</div>
+		{% endif %}
+	</div>
+	<div class="col-sm-12">
+		<a type="button" class="btn btn-warning" href="/social/messages/?view={{ username }}">Your messages</a>
+	</div>
+</div>
+{% endblock %}

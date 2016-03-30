@@ -1,0 +1,29 @@
+{% extends "social/base.html" %}
+
+{% block content %}
+<div class="alert alert-info" role="alert">
+	Please enter your details to sign up.
+</div>
+<form method='POST' action="/social/register/" class="form-horizontal" role="form">
+	{% csrf_token %}
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="user">Username:</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" maxlength='16' id="user" name="user" placeholder="Enter username">
+    </div>
+ 	  <div class="col-sm-6" id="info">
+ 	  </div>  
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="pass">Password:</label>     
+    <div class="col-sm-4">          
+      <input type="password" class="form-control" maxlength='16' id="pass" name="pass" placeholder="Enter password">
+    </div>  
+  </div>
+  <div class="form-group">        
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default">Sign up</button>
+    </div>
+  </div>
+</form>
+{% endblock %}

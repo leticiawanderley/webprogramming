@@ -1,0 +1,63 @@
+/* styles.css */
+
+* {
+  font-family:verdana,sans-serif;
+  font-size  :10pt;
+}
+
+html {
+  background:#fff
+}
+
+img {
+  border            :1px solid black;
+  margin-right      :15px;
+  -moz-box-shadow   :2px 2px 2px #888;
+  -webkit-box-shadow:2px 2px 2px #888;
+  box-shadow        :2px 2px 2px #888;
+}
+ 
+.appname {
+  text-align :center;
+  background :#eb8;
+  color      :#40d;
+  font-family:helvetica;
+  font-size  :20pt;
+  padding    :4px;
+}
+
+.fieldname {
+  float:left;
+  width:120px;
+}
+
+.subhead {
+  font-weight:bold;
+}
+
+.taken, .error {
+  color:red;
+}
+
+.available {
+  color:green;
+}
+
+.whisper {
+  font-style:italic;
+  color     :#006600;
+}
+
+#logo {
+  font-family:Georgia;
+  font-weight:bold;
+  font-style:italic;
+  font-size :97px;
+}
+
+.small {
+    padding: 5px;
+    margin-bottom: 2px;
+    margin-top: 2px;
+}
+
