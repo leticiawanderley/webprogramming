@@ -76,14 +76,17 @@ class FilmSerializer(serializers.ModelSerializer):
 		read_only_fields = ('id', 'director', 'actors', 'awards')
 
 	def create(self, validated_data):
-		actors_data = validated_data.pop('actors')
-		director_data = validated_data.pop('director')
-		if director_data and director_data.get('name'):
-			validated_data['director'] = Director.objects.get_or_create(**director_data)[0]
+		if 'actors' in validated_data:
+			actors_data = validated_data.pop('actors')
+		if 'director' in validated_data:
+			director_data = validated_data.pop('director')
+			if director_data and director_data.get('name'):
+				validated_data['director'] = Director.objects.get_or_create(**director_data)[0]
 		film = Film.objects.create(**validated_data)
-		for actor_data in actors_data:
-			actor = Actor.objects.get_or_create(**actor_data)[0]
-			film.actors.add(actor)
+		if actor_data:
+			for actor_data in actors_data:
+				actor = Actor.objects.get_or_create(**actor_data)[0]
+				film.actors.add(actor)
 		film.save()
 		return film
 
