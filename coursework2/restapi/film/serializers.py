@@ -2,7 +2,6 @@ from film.models import Film, Actor, Director, Award
 from rest_framework import serializers
 from rest_framework.reverse import reverse
 
-#TODO ADD URL
 class ActorSerializer(serializers.ModelSerializer):
 	films = serializers.SerializerMethodField()
 
@@ -13,11 +12,12 @@ class ActorSerializer(serializers.ModelSerializer):
 
 	def create(self, validated_data):
 		view = self.context['view']
-		film_id = view.kwargs['pk']
-		film = Film.objects.get(pk=film_id)
 		actor = Actor.objects.get_or_create(**validated_data)[0]
-		film.actors.add(actor)
-		film.save()
+		if 'pk' in view.kwargs:
+			film_id = view.kwargs['pk']
+			film = Film.objects.get(pk=film_id)
+			film.actors.add(actor)
+			film.save()
 		return actor
 
 	def get_films(self, obj):
@@ -34,14 +34,13 @@ class DirectorSerializer(serializers.ModelSerializer):
 
 	def create(self, validated_data):
 		view = self.context['view']
-		film_id = view.kwargs['pk']
-		film = Film.objects.get(pk=film_id)
-		if film.director:
-			raise serializers.ValidationError("This film already has a director, it's not possible to add another.")
 		director = Director.objects.get_or_create(**validated_data)[0]
-		film.director = director
-		film.save()
-		return actor
+		if 'pk' in view.kwargs:
+			film_id = view.kwargs['pk']
+			film = Film.objects.get(pk=film_id)
+			film.director = director
+			film.save()
+		return director
 
 	def get_films(self, obj):
 		self.request = self.context['request']

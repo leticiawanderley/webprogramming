@@ -10,7 +10,8 @@ def api_root(request, format=None):
     return Response({
         'film': reverse('film-list', request=request, format=format),
         'actor': reverse('actor-list', request=request, format=format),
-        'director': reverse('director-list', request=request, format=format)
+        'director': reverse('director-list', request=request, format=format),
+        'award': reverse('award-list', request=request, format=format)
     })
 
 class FilmList(generics.ListCreateAPIView):
