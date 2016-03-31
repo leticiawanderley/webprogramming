@@ -1,10 +1,14 @@
 from film.models import Film, Actor, Director, Award
 from rest_framework import serializers
+from rest_framework.reverse import reverse
 
+#TODO ADD URL
 class ActorSerializer(serializers.ModelSerializer):
+	films = serializers.SerializerMethodField()
+
 	class Meta:
 		model = Actor
-		fields = ('id','name', 'nationality')
+		fields = ('id', 'url', 'name', 'nationality', 'films')
 		read_only_fields = ('id')
 
 	def create(self, validated_data):
@@ -15,11 +19,17 @@ class ActorSerializer(serializers.ModelSerializer):
 		film.actors.add(actor)
 		film.save()
 		return actor
+
+	def get_films(self, obj):
+		self.request = self.context['request']
+		return "http://" + self.request.META['HTTP_HOST'] + "/film/?actor=" + str(obj.id)
   
 class DirectorSerializer(serializers.ModelSerializer):
+	films = serializers.SerializerMethodField()
+
 	class Meta:
 		model = Director
-		fields = ('id', 'name')
+		fields = ('id', 'url', 'name', 'films')
 		read_only_fields = ('id')
 
 	def create(self, validated_data):
@@ -33,6 +43,10 @@ class DirectorSerializer(serializers.ModelSerializer):
 		film.save()
 		return actor
 
+	def get_films(self, obj):
+		self.request = self.context['request']
+		return "http://" + self.request.META['HTTP_HOST'] + "/film/?director=" + str(obj.id)
+
 class AwardSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Award
@@ -40,11 +54,11 @@ class AwardSerializer(serializers.ModelSerializer):
 		read_only_fields = ('id')
 
 class FilmSerializer(serializers.ModelSerializer):
-	actors = ActorSerializer(many=True)
-	director = DirectorSerializer(many=False)
+	actors = serializers.SerializerMethodField()
+	director = serializers.SerializerMethodField()
 	class Meta:
 		model = Film
-		fields = ('id', 'title', 'year', 'genre', 'director', 'actors')
+		fields = ('id', 'url', 'title', 'year', 'genre', 'director', 'actors')
 		read_only_fields = ('id', 'director')
 
 	def create(self, validated_data):
@@ -79,3 +93,11 @@ class FilmSerializer(serializers.ModelSerializer):
 					raise serializers.ValidationError("It's not possible to update actors in this state.")
 		if director_data['name'] != instance.director.name:
 			raise serializers.ValidationError("It's not possible to update the director in this state.")
+
+	def get_actors(self, obj):
+		self.request = self.context['request']
+		return "http://" + self.request.META['HTTP_HOST'] + "/film/" + str(obj.id) + "/actor"
+
+	def get_director(self, obj):
+		self.request = self.context['request']
+		return "http://" + self.request.META['HTTP_HOST'] + "/film/" + str(obj.id) + "/director"

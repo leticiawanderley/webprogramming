@@ -96,6 +96,6 @@
     <descriptor id="delete_award" type="idempotent">
       <doc>Deletes an award</doc>
     </descriptor>
-    <descriptor href="item">
+    <descriptor href="#item">
   </descriptor>
 </alps>
