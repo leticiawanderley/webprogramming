@@ -16,4 +16,5 @@ class Film(models.Model):
 
 class Award(models.Model):
 	name = models.CharField(max_length=50)
+	category = models.CharField(max_length=50, null=True)
 	film = models.ForeignKey(Film, on_delete=models.CASCADE)

@@ -51,10 +51,10 @@ class AwardList(generics.ListCreateAPIView):
     queryset = Award.objects.all()
     serializer_class = AwardSerializer
     def get_queryset(self):
-    	film = self.request.query_params.get('film', None)
     	queryset = Award.objects.all()
-    	if film is not None:
-    		queryset = queryset.filter(film__id=film)
+    	if 'pk' in self.kwargs:
+    		film_id = self.kwargs['pk']
+    		queryset.filter(film__id=film_id)
     	return queryset
 
 class AwardDetail(generics.RetrieveUpdateDestroyAPIView):

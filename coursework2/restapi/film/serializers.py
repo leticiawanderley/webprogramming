@@ -51,13 +51,13 @@ class AwardSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Award
-		fields = ('id', 'url', 'name', 'film')
+		fields = ('id', 'url', 'name', 'category', 'film')
 		read_only_fields = ('id', 'url', 'film')
 
 	def create(self, validated_data):
-		request = self.context['request']
-		if 'film' in request.query_params:
-			film_id = request.query_params['film']
+		view = self.context['view']
+		if 'pk' in view.kwargs:
+			film_id = view.kwargs['pk']
 			film = Film.objects.get(pk=film_id)
 			validated_data['film'] = film
 		return Award.objects.get_or_create(**validated_data)[0]
@@ -121,4 +121,4 @@ class FilmSerializer(serializers.ModelSerializer):
 
 	def get_awards(self, obj):
 		self.request = self.context['request']
-		return "http://" + self.request.META['HTTP_HOST'] + "/award/" + "?film=" + str(obj.id)
+		return "http://" + self.request.META['HTTP_HOST'] + "/film/" + str(obj.id) + "/award"
