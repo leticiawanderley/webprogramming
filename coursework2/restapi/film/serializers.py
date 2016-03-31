@@ -8,7 +8,7 @@ class ActorSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Actor
 		fields = ('id', 'url', 'name', 'nationality', 'films')
-		read_only_fields = ('id')
+		read_only_fields = ('id', 'url', 'films') 
 
 	def create(self, validated_data):
 		view = self.context['view']
@@ -30,7 +30,7 @@ class DirectorSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Director
 		fields = ('id', 'url', 'name', 'films')
-		read_only_fields = ('id')
+		read_only_fields = ('id', 'url', 'films') 
 
 	def create(self, validated_data):
 		view = self.context['view']
@@ -47,18 +47,33 @@ class DirectorSerializer(serializers.ModelSerializer):
 		return "http://" + self.request.META['HTTP_HOST'] + "/film/?director=" + str(obj.id)
 
 class AwardSerializer(serializers.ModelSerializer):
+	film = serializers.SerializerMethodField()
+
 	class Meta:
 		model = Award
-		fields = ('id', 'name', 'film')
-		read_only_fields = ('id')
+		fields = ('id', 'url', 'name', 'film')
+		read_only_fields = ('id', 'url', 'film')
+
+	def create(self, validated_data):
+		request = self.context['request']
+		if 'film' in request.query_params:
+			film_id = request.query_params['film']
+			film = Film.objects.get(pk=film_id)
+			validated_data['film'] = film
+		return Award.objects.get_or_create(**validated_data)[0]
+
+	def get_film(self, obj):
+		self.request = self.context['request']
+		return "http://" + self.request.META['HTTP_HOST'] + "/film/" + str(obj.film.id)
 
 class FilmSerializer(serializers.ModelSerializer):
 	actors = serializers.SerializerMethodField()
 	director = serializers.SerializerMethodField()
+	awards = serializers.SerializerMethodField()
 	class Meta:
 		model = Film
-		fields = ('id', 'url', 'title', 'year', 'genre', 'director', 'actors')
-		read_only_fields = ('id', 'director')
+		fields = ('id', 'url', 'title', 'year', 'genre', 'director', 'actors', 'awards')
+		read_only_fields = ('id', 'director', 'actors', 'awards')
 
 	def create(self, validated_data):
 		actors_data = validated_data.pop('actors')
@@ -100,3 +115,7 @@ class FilmSerializer(serializers.ModelSerializer):
 	def get_director(self, obj):
 		self.request = self.context['request']
 		return "http://" + self.request.META['HTTP_HOST'] + "/film/" + str(obj.id) + "/director"
+
+	def get_awards(self, obj):
+		self.request = self.context['request']
+		return "http://" + self.request.META['HTTP_HOST'] + "/award/" + "?film=" + str(obj.id)
