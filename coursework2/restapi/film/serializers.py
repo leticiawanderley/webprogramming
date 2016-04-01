@@ -73,43 +73,7 @@ class FilmSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Film
 		fields = ('id', 'url', 'title', 'year', 'genre', 'director', 'actors', 'awards')
-		read_only_fields = ('id', 'director', 'actors', 'awards')
-
-	def create(self, validated_data):
-		if 'actors' in validated_data:
-			actors_data = validated_data.pop('actors')
-		if 'director' in validated_data:
-			director_data = validated_data.pop('director')
-			if director_data and director_data.get('name'):
-				validated_data['director'] = Director.objects.get_or_create(**director_data)[0]
-		film = Film.objects.create(**validated_data)
-		if actor_data:
-			for actor_data in actors_data:
-				actor = Actor.objects.get_or_create(**actor_data)[0]
-				film.actors.add(actor)
-		film.save()
-		return film
-
-	def update(self, instance, validated_data):
-		self.validate_update(instance, validated_data)
-		instance.title = validated_data.get('title', instance.title)
-		instance.year = validated_data.get('year', instance.year)
-		instance.genre = validated_data.get('genre', instance.genre)
-		instance.save()
-		return instance
-
-	def validate_update(self, instance, validated_data):
-		actors_data = validated_data.pop('actors')
-		director_data = validated_data.pop('director')
-		if len(actors_data) != len(instance.actors.all()):
-			raise serializers.ValidationError("It's not possible to update actors in this state.")
-		else:
-			actors = instance.actors.all()
-			for i in range(len(actors)):
-				if actors[i].name != actors_data[i]['name'] or actors[i].nationality != actors_data[i]['nationality']:
-					raise serializers.ValidationError("It's not possible to update actors in this state.")
-		if director_data['name'] != instance.director.name:
-			raise serializers.ValidationError("It's not possible to update the director in this state.")
+		read_only_fields = ('id', 'director', 'actors' 'awards')
 
 	def get_actors(self, obj):
 		self.request = self.context['request']

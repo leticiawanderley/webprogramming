@@ -105,8 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),
-    'PAGE_SIZE': 10,
-    'EXCEPTION_HANDLER': 'film.utils.custom_exception_handler'
+    'PAGE_SIZE': 10
 }
 
 # Internationalization
