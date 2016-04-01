@@ -58,14 +58,13 @@ class ActorDetail(generics.RetrieveUpdateDestroyAPIView):
 			raise Http404
 
 class AwardList(generics.ListCreateAPIView):
-    queryset = Award.objects.all()
     serializer_class = AwardSerializer
     def get_queryset(self):
-    	queryset = Award.objects.all()
     	if 'pk' in self.kwargs:
     		film_id = self.kwargs['pk']
-    		queryset.filter(film__id=film_id)
-    	return queryset
+    		return Award.objects.filter(film__id=film_id)
+    	else:
+    		return Award.objects.filter()
 
 class AwardDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = Award.objects.all()
