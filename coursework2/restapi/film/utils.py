@@ -7,7 +7,7 @@ def custom_exception_handler(exc, context):
     response = exception_handler(exc, context)
 
     # Now add the HTTP status code to the response.
-    if response is not None:
+    if response is not None and not response.status_code:
     	if response.data[0] == "It's not possible to update actors in this state.":
     		response.status_code= status.HTTP_406_NOT_ACCEPTABLE
     	elif response.data[0] == "It's not possible to update the director in this state.":
