@@ -1,5 +1,4 @@
 $(function(){
-
 	$('#user').blur(function(){
 		$.ajax({
 			type: 'POST',
@@ -20,11 +19,8 @@ function checkuseranswer(data, textStatus, jqHXR)
 	$('#info').html(data);
 }
 
-$("a").removeAttr('href');
-
-$(function(){
-	$('.request_friendship').click(function(event){
-		$.ajax({
+$(document).on('click', '.request_friendship', function(){
+	$.ajax({
 			type: 'POST',
 			url: '/social/members/',
 			data : {
@@ -34,42 +30,10 @@ $(function(){
 			success: reloadLists,
 			dataType: 'html'
 		});
-	});
-});
+})
 
-$(function(){
-	$('.accept_request').click(function(event){
-		$.ajax({
-			type: 'POST',
-			url: '/social/members/',
-			data : {
-				'accept' : $(this).attr('id'),
-				'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
-			},
-			success: reloadLists,
-			dataType: 'html'
-		});
-	});
-});
-
-$(function(){
-	$('.deny_request').click(function(event){
-		$.ajax({
-			type: 'POST',
-			url: '/social/members/',
-			data : {
-				'deny' : $(this).attr('id'),
-				'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
-			},
-			success: reloadLists,
-			dataType: 'html'
-		});
-	});
-});
-
-$(function(){
-	$('.cancel_request').click(function(event){
-		$.ajax({
+$(document).on('click', '.cancel_request', function(){
+	$.ajax({
 			type: 'POST',
 			url: '/social/members/',
 			data : {
@@ -79,12 +43,36 @@ $(function(){
 			success: reloadLists,
 			dataType: 'html'
 		});
-	});
+})
+
+$(document).on('click','.accept_request', function() {
+	$.ajax({
+			type: 'POST',
+			url: '/social/members/',
+			data : {
+				'accept' : $(this).attr('id'),
+				'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+			},
+			success: reloadLists,
+			dataType: 'html'
+		});
 });
 
-$(function(){
-	$('.unfriend_members').click(function(event){
-		$.ajax({
+$(document).on('click','.deny_request', function() {
+	$.ajax({
+			type: 'POST',
+			url: '/social/members/',
+			data : {
+				'deny' : $(this).attr('id'),
+				'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+			},
+			success: reloadLists,
+			dataType: 'html'
+		});
+});
+
+$(document).on('click','.unfriend_members', function() {
+	$.ajax({
 			type: 'POST',
 			url: '/social/members/',
 			data : {
@@ -94,12 +82,10 @@ $(function(){
 			success: reloadLists,
 			dataType: 'html'
 		});
-	});
 });
 
-$(function(){
-	$('.unfriend').click(function(event){
-		$.ajax({
+$(document).on('click','.unfriend', function() {
+	$.ajax({
 			type: 'POST',
 			url: '/social/friends/',
 			data : {
@@ -109,10 +95,10 @@ $(function(){
 			success: reloadLists,
 			dataType: 'html'
 		});
-	});
 });
 
 function reloadLists(data, textStatus, jqHXR)
 {
 	$("#content").html(data);
 }
+

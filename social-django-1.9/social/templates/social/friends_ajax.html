@@ -12,7 +12,7 @@
 							<tr>
 								{% csrf_token %}
 								<td><a href="/social/members/?view={{ member.username }}"> {{ member.username }}</a></td>
-								<td><a href="" class="btn btn-xs btn-danger unfriend" id="{{ member.username }}">unfriend</a></td>
+								<td><button class="btn btn-xs btn-danger unfriend" id="{{ member.username }}">unfriend</button></td>
 							</tr>
 						{% endfor %}
 					</table>

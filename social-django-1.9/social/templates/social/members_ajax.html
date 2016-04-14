@@ -11,7 +11,7 @@
 						<tr>
 							<td><div class="col-sm-4"><a href="?view={{ member.username }}"> {{ member.username }}</a></div></td>
 							<td><div class="col-sm-2">{% csrf_token %}
-								<a class="btn btn-xs btn-warning request_friendship" id="{{ member.username }}" href="">request friendship</a>
+								<button class="btn btn-xs btn-warning request_friendship" id="{{ member.username }}">request friendship</button>
 							</td>
 						<tr>
 					{% endfor %}
@@ -31,8 +31,8 @@
 							<td><a href="?view={{ request.username }}" title="{{ request.profile.text }}"> {{ request.username }} </a></td>
 							{% csrf_token %}
 							<td>requested my friendship</td>
-							<td><a href="" class="btn btn-xs btn-success accept_request" id="{{ request.username }}">accept</a></td>
-							<td><a href="" class="btn btn-xs btn-danger deny_request" id="{{ request.username }}">deny</a></td>	
+							<td><button class="btn btn-xs btn-success accept_request" id="{{ request.username }}">accept</button></td>
+							<td><button class="btn btn-xs btn-danger deny_request" id="{{ request.username }}">deny</button></td>	
 						</tr>
 					{% endfor %}
 					{% for member in members %}
@@ -42,15 +42,15 @@
 								{% if member in my_friendship_request %}
 									{% csrf_token %}
 									<td>I requested the friendship</td>
-									<td><a href="" class="btn btn-xs btn-danger cancel_request" id="{{ member.username }}">cancel request</a></td>
+									<td><button class="btn btn-xs btn-danger cancel_request" id="{{ member.username }}">cancel request</button></td>
 									<td></td>
 								{% else %}
 									{% if member in friends %}
 										{% csrf_token %}
-										<td><a href="" class="btn btn-xs btn-danger unfriend_members" id="{{ member.username }}">unfriend</a></td>
+										<td><button class="btn btn-xs btn-danger unfriend_members" id="{{ member.username }}">unfriend</button></td>
 									{% else%}
 										{% csrf_token %}
-										<td><a href="" class="btn btn-xs btn-warning request_friendship" id="{{ member.username }}">request friendship</a></td>
+										<td><button class="btn btn-xs btn-warning request_friendship" id="{{ member.username }}">request friendship</button></td>
 									{% endif %}
 									<td></td>
 									<td></td>
